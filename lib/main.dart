@@ -1,3 +1,11 @@
+// git config user.name "Keeratiburt"
+// git config user.email "abc@gmail.com"
+// git add .
+// git commit -m "Create button"
+// git log --oneline
+
+
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -29,7 +37,7 @@ class _MyPageState extends State<MyPage> {
                   message = 'กดปุ่มแล้ว!';
                 });
               },
-              child: const Text('กดฉัน'),
+              child: const Text('Hello'),
             ),
           ],
         ),

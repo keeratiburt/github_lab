@@ -3,6 +3,11 @@
 // git add .
 // git commit -m "Create button"
 // git log --oneline
+// git diff
+// git add lib/main.dart
+// git remote add origin https://github.com/keeratiburt/github_lab.git
+// git remote -v
+// git push -u origin main
 
 
 
@@ -37,7 +42,7 @@ class _MyPageState extends State<MyPage> {
                   message = 'กดปุ่มแล้ว!';
                 });
               },
-              child: const Text('Hello'),
+              child: const Text('Hello again'),
             ),
           ],
         ),

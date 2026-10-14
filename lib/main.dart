@@ -10,8 +10,6 @@
 // git push -u origin main
 // git push
 
-
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -26,8 +24,6 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-  String message = 'ยังไม่ได้กดปุ่ม';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,16 +32,38 @@ class _MyPageState extends State<MyPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(message),
+            const Text('กดปุ่มเพื่อไปหน้าโปรไฟล์'),
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  message = 'กดปุ่มแล้ว!';
-                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => const ProfilePage(),
+                  ),
+                );
               },
-              child: const Text('Hello againl'),
+              child: const Text('Press'),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Profile')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('ย้อนกลับ'),
         ),
       ),
     );

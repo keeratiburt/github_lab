@@ -11,19 +11,80 @@
 // git push
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MaterialApp(home: MyPage()));
+const _darkModeKey = 'dark_mode';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final preferences = SharedPreferencesAsync();
+  final isDarkMode = await preferences.getBool(_darkModeKey) ?? false;
+
+  runApp(MyApp(preferences: preferences, initialDarkMode: isDarkMode));
 }
 
-class MyPage extends StatefulWidget {
-  const MyPage({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({
+    required this.preferences,
+    required this.initialDarkMode,
+    super.key,
+  });
+
+  final SharedPreferencesAsync preferences;
+  final bool initialDarkMode;
 
   @override
-  State<MyPage> createState() => _MyPageState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _MyPageState extends State<MyPage> {
+class _MyAppState extends State<MyApp> {
+  late bool _isDarkMode;
+
+  @override
+  void initState() {
+    super.initState();
+    _isDarkMode = widget.initialDarkMode;
+  }
+
+  Future<void> _changeTheme(bool isDarkMode) async {
+    setState(() {
+      _isDarkMode = isDarkMode;
+    });
+
+    await widget.preferences.setBool(_darkModeKey, isDarkMode);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
+      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      home: MyPage(isDarkMode: _isDarkMode, onThemeChanged: _changeTheme),
+    );
+  }
+}
+
+class MyPage extends StatelessWidget {
+  const MyPage({
+    required this.isDarkMode,
+    required this.onThemeChanged,
+    super.key,
+  });
+
+  final bool isDarkMode;
+  final ValueChanged<bool> onThemeChanged;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +104,19 @@ class _MyPageState extends State<MyPage> {
                 );
               },
               child: const Text('Press'),
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: 320,
+              child: SwitchListTile(
+                title: const Text('โหมดมืด'),
+                subtitle: Text(isDarkMode ? 'เปิดใช้งาน' : 'ปิดใช้งาน'),
+                secondary: Icon(
+                  isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                ),
+                value: isDarkMode,
+                onChanged: onThemeChanged,
+              ),
             ),
           ],
         ),

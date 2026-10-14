@@ -8,6 +8,7 @@
 // git remote add origin https://github.com/keeratiburt/github_lab.git
 // git remote -v
 // git push -u origin main
+// git push
 
 
 
@@ -42,7 +43,7 @@ class _MyPageState extends State<MyPage> {
                   message = 'กดปุ่มแล้ว!';
                 });
               },
-              child: const Text('Hello again'),
+              child: const Text('Hello againl'),
             ),
           ],
         ),
